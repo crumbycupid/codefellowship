@@ -4,12 +4,11 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import org.springframework.dao.DataAccessException;
 
 import java.util.Date;
 
 @Entity
-public class SiteUser {
+public class ApplicationUser {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,17 +17,37 @@ public class SiteUser {
     private String username;
     private String password;
     private String  firstName;
+    private String lastName;
     private Date dateOfBirth;
+    private String bio;
 
-    protected SiteUser(){
+    protected ApplicationUser(){
 
     }
 
-    public SiteUser(String username, String password, String firstName, Date dateOfBirth) {
+    public ApplicationUser(String username, String lastName, String password, String firstName, Date dateOfBirth, String bio) {
         this.username = username;
         this.password = password;
         this.firstName = firstName;
+        this.lastName = lastName;
         this.dateOfBirth = dateOfBirth;
+        this.bio = bio;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getBio() {
+        return bio;
+    }
+
+    public void setBio(String bio) {
+        this.bio = bio;
     }
 
     public Long getId() {
