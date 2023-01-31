@@ -49,6 +49,12 @@ public class WebSecurityConfig {
                 .and()
                 .httpBasic()
                 .and()
+                .formLogin()
+                .loginPage("/login")
+                .and()
+                .logout()
+                .logoutSuccessUrl("/login")
+                .and()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
