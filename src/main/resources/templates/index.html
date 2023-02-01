@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
@@ -7,7 +7,7 @@
 <body>
 Home Page
 
-<h3 th:if=${username}" th:text="${'Current User: ' + username + ' with first name: ' + FistName}"></h3>
+<h3 th:if="${username}" th:text="${'Current User: ' + username + ' with first name: ' + FirstName}"></h3>
 
 <a th:if="!${username}" href="/login">Log In</a>
 <a th:if="${username}" href="/logout">Logout</a>
