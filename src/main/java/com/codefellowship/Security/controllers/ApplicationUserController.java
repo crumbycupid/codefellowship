@@ -83,6 +83,9 @@ public class ApplicationUserController {
         m.addAttribute("authUser", authenticatedUser);
         ApplicationUser viewUser = applicationUserRepository.findById(id).orElseThrow();
         m.addAttribute("viewUser", viewUser);
+        m.addAttribute("usersIFollow", viewUser.getUsersIFollow());
+        m.addAttribute("usersWhoFollowMe", viewUser.getGetUsersWhoFollowMe());
+
         return "user-info.html";
     }
 
@@ -98,6 +101,22 @@ public class ApplicationUserController {
         }else {
             redir.addFlashAttribute("errorMessage", "Cannot edit another users info");
         }
+        return new RedirectView("/user/" + id);
+    }
+
+    @PutMapping("/follow-user/{id}")
+    public RedirectView followUser(Principal p, @PathVariable Long id){
+        ApplicationUser userToFollow = applicationUserRepository.findById(id).orElseThrow(() -> new  RuntimeException("Error reading user" + " from the database with ID of : " + id));
+        ApplicationUser browsingUser = applicationUserRepository.findByUsername(p.getName());
+
+        if(browsingUser.getUsername().equals(userToFollow.getUsername())){
+            throw new IllegalArgumentException("You can never NOT follow yourself...Dummy");
+        }
+
+        browsingUser.getUsersIFollow().add(userToFollow);
+
+        applicationUserRepository.save(browsingUser);
+
         return new RedirectView("/user/" + id);
     }
 }

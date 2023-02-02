@@ -3,12 +3,8 @@ package com.codefellowship.Security.models;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import java.util.Collection;
-import java.util.Date;
+import javax.persistence.*;
+import java.util.*;
 
 @Entity
 public class ApplicationUser implements UserDetails {
@@ -23,11 +19,23 @@ public class ApplicationUser implements UserDetails {
     private String lastName;
     private Date dateOfBirth;
     private String bio;
+    @OneToMany(mappedBy = "applicationUser", cascade = CascadeType.ALL)
+    List<Post> postList;
+
+    @ManyToMany(mappedBy = "usersIFollow")
+    Set<ApplicationUser> usersWhoFollowMe = new HashSet<>();
+
+    @ManyToMany
+    @JoinTable(
+            name = "followers-to-followees",
+            joinColumns = {@JoinColumn(name = "userWhoIsFollowing")},
+            inverseJoinColumns = {@JoinColumn(name = "FollowedUser")}
+    ) //takes a name, first join column, and inverse join column
+    Set<ApplicationUser> usersIFollow = new HashSet<>();
 
     protected ApplicationUser(){
 
     }
-
     public ApplicationUser(String username, String lastName, String password, String firstName, Date dateOfBirth, String bio) {
         this.username = username;
         this.password = password;
@@ -37,34 +45,16 @@ public class ApplicationUser implements UserDetails {
         this.bio = bio;
     }
 
-    public String getLastName() {
-        return lastName;
+
+
+    public Set<ApplicationUser> getUsersIFollow() {
+        return usersIFollow;
     }
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+    public Set<ApplicationUser> getGetUsersWhoFollowMe() {
+        return usersWhoFollowMe;
     }
 
-    public String getBio() {
-        return bio;
-    }
-
-    public void setBio(String bio) {
-        this.bio = bio;
-    }
-
-    public Long getId() {
-
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getUsername() {
-        return username;
-    }
 
     @Override
     public boolean isAccountNonExpired() {
@@ -86,13 +76,39 @@ public class ApplicationUser implements UserDetails {
         return true;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return null;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getBio() {
+        return bio;
+    }
+
+    public void setBio(String bio) {
+        this.bio = bio;
+    }
+
+    public Long getId() { return id; }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getPassword() {
@@ -119,6 +135,6 @@ public class ApplicationUser implements UserDetails {
         this.dateOfBirth = dateOfBirth;
     }
 
-
+    public List<Post> getPostList(){ return postList; }
 
 }

@@ -17,10 +17,33 @@
 <!--<h3 th:if="${authUser.username}" th:text="${'Current user: ' + authUser.username + ' with firstname ' + authUser.firstName"}></h3>-->
 <form th:action="${'/user/' + viewUser.id}" th:method="PUT">
     <label for="username">Username</label>
-    <input th:value="${viewUser.username"} type="text" name="username" th:disabled="{!authUser.username.equals(viewUser.username}"/>
+    <input th:value="${viewUser.username}" type="text" name="username" th:disabled="${!authUser.username.equals(viewUser.username)}"/>
     <label for="firstName">First Name</label>
-    <input th:value="${viewUser.firstname"} type="text" name="firstName" th:disabled="${!authUser.username.equals(viewUser.username)}"/>
+    <input th:value="${viewUser.firstName}" type="text" name="firstName" th:disabled="${!authUser.username.equals(viewUser.username)}"/>
     <input type="submit" value ="Edit User Info"/>
 </form>
+
+<form th:action="${'/follow-user/' + viewUser.id}" th:method="PUT">
+    <input type="hidden" th:value="${viewUser.username}">
+    <input type="submit" value="Follow" th:hidden="${authUser.username.equals(viewUser.username)}">
+</form>
+
+<article class="Post">
+    <h2>Posts</h2>
+    <form>
+        <input th:text="">
+    </form>
+</article>
+
+<h2>Following</h2>
+<ul th:each="followedUser : ${usersIFollow}">
+    <li th:text="${followedUser.username}"></li>
+</ul>
+
+<h2>Followers</h2>
+<ul th:each="userThatFollows : ${usersWhoFollowMe}">
+    <li th:text="${userThatFollows.username}"></li>
+</ul>
+
 </body>
 </html>
